@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Jira Bookmark</title>
+
+    <style>
+	body{font-family:Arial,Helvetica,Sans-serif;padding:40px 0 0;}
+	a{border:1px solid #ccc;color:#999;text-decoration:none;padding:5px 10px;}
+    </style>
+
+  </head>
+  <body>
+
+    <a href="javascript:(() => {let z = prompt('your branch', `git checkout -b ${$('#issuekey-val').text() || $('#key-val').text()}_${$('#summary-val').text().toLowerCase().replace(/[\s\:\-\+\*\'\&quot;\/\,\<\>\)\(\!\@\.\[\]]/g, '_')}`.replace(/(_)\1+/g, '_').replace(/_$/g, ''));console.log(z)})();" title="jira->branchname">jira->branchname</a>
+
+    <p>drag it to your bookmarks bar, open jira ticket, click, ...., profit.<p>
+  </body>
+</html>
