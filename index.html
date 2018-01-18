@@ -20,5 +20,42 @@
     <a href="javascript:[...document.querySelectorAll('.js-issue-row')].forEach((item) => { const issueItem = item.querySelector('a'); let html = issueItem.outerHTML; let issue = html.match(/\[([^\]]+)]/g); if(issue){ html = `<div style=&quot;margin: 5px -187px 5px -73px;background:#f6f8fa;font-weight:bold;padding: 5px 0 5px 73px;border-width: 1px 0;&quot;>Open in JIRA: `; issue.forEach((issueItem) => { let href = issueItem.replace(/\[|\]/g, '').toUpperCase(); html += `<a style='margin-right:10px;background-position:center right;background-repeat:no-repeat;background-image:linear-gradient(transparent,transparent),url(&quot;data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+IDxwYXRoIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzM2YyIgZD0iTTEuNSA0LjUxOGg1Ljk4MlYxMC41SDEuNXoiLz4gPHBhdGggZmlsbD0iIzM2YyIgZD0iTTUuNzY1IDFIMTF2NS4zOUw5LjQyNyA3LjkzN2wtMS4zMS0xLjMxTDUuMzkzIDkuMzVsLTIuNjktMi42ODggMi44MS0yLjgwOEw0LjIgMi41NDR6Ii8+IDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik05Ljk5NSAyLjAwNGwuMDIyIDQuODg1TDguMiA1LjA3IDUuMzIgNy45NSA0LjA5IDYuNzIzbDIuODgyLTIuODgtMS44NS0xLjg1MnoiLz4gPC9zdmc+&quot;);padding-right:13px' href=&quot;https://kfzteile24.atlassian.net/browse/${href}&quot; target=&quot;_blank&quot;>[${href}]</a>`; }); issueItem.parentNode.innerHTML += `${html}</div>`; } });" title="git->jira">git->jira</a>
 
     <p>go to github pull requests, click.<p>
+
+    <textarea style="width:100%;height:50vh;">
+      (() => {
+        let ary = [], messagesSelector = '', divStyle = '', getParent = () => {},v=2;
+        if(location.href.includes('pulls')) {
+            ary = [...document.querySelectorAll('.js-issue-row')];
+            messagesSelector = 'a';
+            divStyle = `style="color:#444d56;margin: 5px -187px 5px -73px;background:#f6f8fa;font-weight:bold;padding: 5px 0 5px 73px;border-width: 1px 0;"`;
+            getParent = (item) => {return item.parentNode}
+        }else if(location.href.includes('commits')) {
+            ary = [...document.querySelectorAll('.js-details-container')];
+            messagesSelector = 'a.message';
+            divStyle = `style="color:#444d56;margin: 5px -345px 5px -56px;background: #f6f8fa;font-weight: bold;padding: 5px 0 5px 56px;border-width: 1px 0;"`;
+            getParent = (item) => {return item.parentNode.parentNode}
+        }else{
+            alert(404)
+            // pop up with links
+        }
+        // add pull page ==> commits and title
+
+        ary.forEach((item) => {
+            const issueItem = item.querySelector(messagesSelector);
+            let html = issueItem.innerHTML;
+            let issue = html.match(/\[([^\]]+)]/g);
+            if(issue){
+                html = `<div ${divStyle}>Open in JIRA: `;
+                issue.forEach((issueItem) => {
+                    let href = issueItem.replace(/\[|\]/g, '').toUpperCase();
+                    html += `<a style='color:#0366d6;margin-right:10px;background-position:center right;background-repeat:no-repeat;background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+IDxwYXRoIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzM2YyIgZD0iTTEuNSA0LjUxOGg1Ljk4MlYxMC41SDEuNXoiLz4gPHBhdGggZmlsbD0iIzM2YyIgZD0iTTUuNzY1IDFIMTF2NS4zOUw5LjQyNyA3LjkzN2wtMS4zMS0xLjMxTDUuMzkzIDkuMzVsLTIuNjktMi42ODggMi44MS0yLjgwOEw0LjIgMi41NDR6Ii8+IDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik05Ljk5NSAyLjAwNGwuMDIyIDQuODg1TDguMiA1LjA3IDUuMzIgNy45NSA0LjA5IDYuNzIzbDIuODgyLTIuODgtMS44NS0xLjg1MnoiLz4gPC9zdmc+");padding-right:13px' href="https://kfzteile24.atlassian.net/browse/${href}" target="_blank">[${href}]</a>`;
+                });
+                getParent(issueItem).innerHTML += `${html}</div>`;
+            }
+        });
+      })();
+
+    </textarea>
+
   </body>
 </html>
